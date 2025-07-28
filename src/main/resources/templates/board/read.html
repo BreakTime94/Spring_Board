@@ -5,7 +5,7 @@
     <h1>Guestbook Read Page</h1>
     <div class="form-grop">
       <label>Gno</label>
-      <input type="text" class="form-control" name="gno" th:value="${dto.gno}" readonly>
+      <input type="text" class="form-control" name="bno" th:value="${dto.bno}" readonly>
     </div>
     <div class="form-group">
       <label>Title</label>
@@ -17,16 +17,89 @@
     </div>
     <div class="form-group">
       <label>Writer</label>
-      <input type="text" class="form-control" name="writer" th:value="${dto.writer}" readonly>
+      <input type="text" class="form-control" name="writerName" th:value="${dto.writerName}" readonly>
     </div>
     <div class="form-group">
       <label>RegDate</label>
-      <input type="text" class="form-control" name="regDate" th:value="${dto.regDate}" readonly>
+      <input type="text" class="form-control" name="regDate" th:value="${#temporals.format(dto.regDate, 'yyyy/MM/dd HH:mm:ss')}" readonly>
     </div>
 <!--    <div class="form-group">-->
 <!--      <label>ModDate</label>-->
 <!--      <input type="text" class="form-control" name="modDate" th:value="${#temporals.format(dto.modDate, 'yyyy/MM/dd HH:mm:ss')}" readonly>-->
 <!--    </div>-->
-    <a th:href="@{/templates/board/modify(page = ${pageDto.page}, size = ${pageDto.size}, gno= ${dto.gno}, type=${pageDto.type}, keyword=${pageDto.keyword})}" class="btn btn-primary mt-3">modify</a>
-    <a th:href="@{/templates/board/list(page = ${pageDto.page}, size = ${pageDto.size}, type=${pageDto.type}, keyword=${pageDto.keyword})}" class="btn btn-primary mt-3">List</a>
+    <a th:href="@{/board/modify(page = ${requestDto.page}, size = ${requestDto.size}, bno= ${dto.bno}, type=${requestDto.type}, keyword=${requestDto.keyword})}" class="btn btn-primary mt-3">modify</a>
+    <a th:href="@{/board/list(page = ${requestDto.page}, size = ${requestDto.size}, type=${requestDto.type}, keyword=${requestDto.keyword})}" class="btn btn-primary mt-3">List</a>
+  </th:block>
+</th:block>
+  <script>
+    //전역변수로 counter 0
+    // 10 ** 3
+
+    let counter = 0;
+    function callLocal(n, cb) {
+      const add = 10 ** n;
+        counter += add;
+        console.log(`[local] 10^${n} = ${add} -> counter : ${counter}`)
+        if(cb) cb();
+    }
+
+    function callAsync(n, cb) {
+      const add = 10 ** n;
+      const delay = Math.floor(Math.random() * 1000);
+      setTimeout(() => {
+        counter += add;
+        console.log(`[async] 10^${n} = ${add} -> counter : ${counter}, delay : ${delay}ms`)
+        if(cb) cb();
+      }, delay);
+    }
+
+    //callback
+
+    callAsync(0, () => {
+      callAsync(1, () => {
+        callAsync(2, () => {
+          callAsync(3, () => {
+            callAsync(4, () => {
+              callLocal(5, () => {
+                callLocal(6, () => {
+                  callLocal(7 , () => {
+                    callLocal(8, () => {
+                      callLocal(9)
+                    })
+                  })
+                })
+              })
+            });
+          });
+        });
+      });
+    });
+
+    // $.ajax({
+    //   success: (data) => {
+    //     $.ajax({
+    //       success: (data) => {
+    //
+    //       }
+    //     })
+    //   }
+    // });
+    $.ajax({
+      success:(data) => {},
+      error:(error) => {},
+      always:(data) => {}
+    })
+    .done((data) => {
+
+    })
+    .fail(error => {
+
+    })
+    .always((data) => {
+
+    })
+    .done((data) => {
+
+    })
+  </script>
 </html>

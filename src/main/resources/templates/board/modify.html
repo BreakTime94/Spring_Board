@@ -3,10 +3,10 @@
 <th:block th:replace="~{/layout/index :: setContent(~{this :: content})}">
   <th:block th:fragment="content">
     <h1>Guestbook Modify Page</h1>
-    <form th:action="@{/templates/board/modify}" method="post">
+    <form th:action="@{/board/modify}" method="post">
       <div class="form-grop">
-        <label>Gno</label>
-        <input type="text" class="form-control" name="gno" th:value="${dto.gno}" readonly>
+        <label>Bno</label>
+        <input type="text" class="form-control" name="bno" th:value="${dto.bno}" readonly>
       </div>
       <div class="form-group">
         <label>Title</label>
@@ -18,24 +18,26 @@
       </div>
       <div class="form-group">
         <label>Writer</label>
-        <input type="text" class="form-control" name="writer" th:value="${dto.writer}" readonly>
+        <input type="text" class="form-control" name="writerName" th:value="${dto.writerName}" readonly>
       </div>
       <div class="form-group">
         <label>RegDate</label>
-        <input type="text" class="form-control" name="regDate" th:value="${dto.regDate}" readonly>
+        <input type="text" class="form-control" name="regDate" th:value="${#temporals.format(dto.regDate, 'yyyy/MM/dd HH:mm:ss')}" readonly>
       </div>
       <div class="form-group">
         <label>ModDate</label>
-        <input type="text" class="form-control" name="modDate" th:value="${dto.modDate}" readonly>
+        <input type="text" class="form-control" name="modDate" th:value="${#temporals.format(dto.modDate, 'yyyy/MM/dd HH:mm:ss')}" readonly>
       </div>
+      <input type="hidden" name="writerEmail" th:value="${dto.writerEmail}">
       <input type="hidden" name="page" th:value="${pageDto.page}">
       <input type="hidden" name="size" th:value="${pageDto.size}">
-      <input type ="hidden" name="type" th:value="${requestDto.type}">
-      <input type ="hidden" name="type" th:value="${requestDto.keyword}">
+      <input type ="hidden" name="type" th:value="${pageDto.type}">
+      <input type ="hidden" name="type" th:value="${pageDto.keyword}">
 
       <button type = "submit" class="btn btn-primary" onclick="return confirm('수정하시겠습니까?')">Modify</button>
-      <a th:href="@{/templates/board/list(page = ${pageDto.page}, size = ${pageDto.size}, type=${requestDto.type}, keyword=${requestDto.keyword})}" class="btn btn-primary">List</a>
+      <a th:href="@{/board/list(page = ${pageDto.page}, size = ${pageDto.size}, type=${pageDto.type}, keyword=${pageDto.keyword})}" class="btn btn-primary">List</a>
       <button type="submit" class="btn btn-danger" formaction="remove" onclick="const result = confirm('삭제하시겠습니까?'); if(result) {document.querySelector('[name=page]').value = 1;} return result;">Remove</button>
     </form>
   </th:block>
+</th:block>
 </html>

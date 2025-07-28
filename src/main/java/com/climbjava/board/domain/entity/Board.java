@@ -1,4 +1,4 @@
-package com.climbjava.board.entity;
+package com.climbjava.board.domain.entity;
 
 import jakarta.persistence.*;
 import lombok.*;

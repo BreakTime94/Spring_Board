@@ -1,6 +1,6 @@
 package com.climbjava.board.repository;
 
-import com.climbjava.board.entity.Member;
+import com.climbjava.board.domain.entity.Member;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

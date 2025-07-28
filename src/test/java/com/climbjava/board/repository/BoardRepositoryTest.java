@@ -1,8 +1,8 @@
 package com.climbjava.board.repository;
 
-import com.climbjava.board.projection.dto.*;
-import com.climbjava.board.entity.Board;
-import com.climbjava.board.entity.Member;
+import com.climbjava.board.domain.projection.dto.*;
+import com.climbjava.board.domain.entity.Board;
+import com.climbjava.board.domain.entity.Member;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -14,7 +14,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.IntStream;
 
@@ -93,4 +92,18 @@ public class BoardRepositoryTest {
     pages.forEach(log::info);
   }
 
+  @Test
+  public void testSearch(){
+    repository.search1();
+  }
+
+  @Test
+  public void testSearchPage(){
+    Page<BoardWithReplyCountDTO> bwrc = repository.searchPage("tcw", "title", PageRequest.of(3, 5, Sort.by("bno").descending().and(Sort.by(Sort.Direction.ASC, "title"))));
+
+    log.info(bwrc.getContent());
+    log.info(bwrc.getTotalElements());
+    bwrc.getContent().forEach(log::info);
+
+  }
 }

@@ -1,7 +1,7 @@
-package com.climbjava.board.projection.dto;
+package com.climbjava.board.domain.projection.dto;
 
-import com.climbjava.board.entity.Board;
-import com.climbjava.board.entity.Member;
+import com.climbjava.board.domain.entity.Board;
+import com.climbjava.board.domain.entity.Member;
 import lombok.Getter;
 
 @Getter

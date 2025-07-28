@@ -1,4 +1,4 @@
-package com.climbjava.board.dto;
+package com.climbjava.board.domain.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

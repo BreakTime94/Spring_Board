@@ -1,4 +1,4 @@
-package com.climbjava.board.dto;
+package com.climbjava.board.domain.dto;
 
 import lombok.Getter;
 import lombok.ToString;

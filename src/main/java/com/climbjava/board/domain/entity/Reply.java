@@ -1,9 +1,7 @@
-package com.climbjava.board.entity;
+package com.climbjava.board.domain.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-
-import java.io.Serializable;
 
 @Entity
 @Builder
@@ -19,6 +17,6 @@ public class Reply extends BaseEntity {
   
   private String replyer;
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.LAZY)
   private Board board;
 }

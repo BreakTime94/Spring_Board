@@ -1,7 +1,7 @@
 package com.climbjava.board.repository;
 
-import com.climbjava.board.entity.Board;
-import com.climbjava.board.entity.Reply;
+import com.climbjava.board.domain.entity.Board;
+import com.climbjava.board.domain.entity.Reply;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -10,7 +10,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
 import java.util.Random;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 @SpringBootTest
@@ -46,5 +45,15 @@ public class ReplyRepositoryTest {
     log.info(reply);
     log.info(reply.getBoard());
     log.info(reply.getBoard().getWriter());
+  }
+
+  @Test
+  public void testFindByBoard_Bno() {
+    repository.findByBoard_BnoOrderByRno(3L).forEach(log :: info);
+  }
+
+  @Test
+  public void testFindByBoard() {
+    repository.findByBoard(Board.builder().bno(3L).build()).forEach(log :: info);
   }
 }

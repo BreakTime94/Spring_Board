@@ -36,7 +36,7 @@
           <th scope="row">[[${g.bno}]]</th>
           <td><a th:href="@{'/board/read' + ${requestDto.qs2} + '&bno=' + ${g.bno}}">[[${g.title}]] <span class="text-danger small fw-bold">&#91;[[${g.replyCount}]]&#93;</span></a></td>
           <td th:text="${g.writerName}"></td>
-          <td th:text="${g.regDate}"></td>
+          <td th:text="${#temporals.format(g.regDate, 'yyyy/MM/dd HH:mm:ss')}"></td>
         </tr>
       </table>
       <ul class="pagination justify-content-center">

@@ -1,11 +1,11 @@
 package com.climbjava.board.service;
 
-import com.climbjava.board.dto.BoardDTO;
-import com.climbjava.board.dto.PageRequestDTO;
-import com.climbjava.board.dto.PageResponseDTO;
-import com.climbjava.board.entity.Board;
-import com.climbjava.board.entity.Member;
-import com.climbjava.board.projection.dto.BoardWithReplyCountDTO;
+import com.climbjava.board.domain.dto.BoardDTO;
+import com.climbjava.board.domain.dto.PageRequestDTO;
+import com.climbjava.board.domain.dto.PageResponseDTO;
+import com.climbjava.board.domain.entity.Board;
+import com.climbjava.board.domain.entity.Member;
+import com.climbjava.board.domain.projection.dto.BoardWithReplyCountDTO;
 
 public interface BoardService {
   Long register(BoardDTO boardDTO);

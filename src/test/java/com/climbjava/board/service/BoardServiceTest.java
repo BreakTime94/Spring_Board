@@ -1,9 +1,7 @@
 package com.climbjava.board.service;
 
-import com.climbjava.board.dto.BoardDTO;
-import com.climbjava.board.dto.PageRequestDTO;
-import com.climbjava.board.entity.Board;
-import com.mysema.commons.lang.Assert;
+import com.climbjava.board.domain.dto.BoardDTO;
+import com.climbjava.board.domain.dto.PageRequestDTO;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
