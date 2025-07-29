@@ -31,4 +31,18 @@ public class ReplyController {
     log.info(replyDTO);
     return ResponseEntity.ok(replyService.register(replyDTO));
   }
+
+  @PutMapping(value = "")
+  public ResponseEntity<?> update(@RequestBody ReplyDTO replyDTO) {
+    log.info(replyDTO);
+    replyService.modify(replyDTO);
+    return ResponseEntity.ok(replyDTO);
+  }
+
+  @DeleteMapping(value = "")
+  public ResponseEntity<?> delete(@RequestBody Long rno) {
+    log.info(rno);
+    replyService.delete(rno);
+    return ResponseEntity.ok(rno);
+  }
 }
