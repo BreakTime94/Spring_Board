@@ -29,77 +29,159 @@
 <!--    </div>-->
     <a th:href="@{/board/modify(page = ${requestDto.page}, size = ${requestDto.size}, bno= ${dto.bno}, type=${requestDto.type}, keyword=${requestDto.keyword})}" class="btn btn-primary mt-3">modify</a>
     <a th:href="@{/board/list(page = ${requestDto.page}, size = ${requestDto.size}, type=${requestDto.type}, keyword=${requestDto.keyword})}" class="btn btn-primary mt-3">List</a>
+
+    <div class="mt-4">
+      <h5><button class="badge bg-info addReply p-2 text-decoration-none text-white">Add Reply</button></h5>
+      <h5><button class="badge bg-secondary replyCount p-2 text-decoration-none text-white border-0">Reply Count[[${dto.replyCount}]]</button></h5>
+      <ul class="list-group replyList">
+
+      </ul>
+    </div>
+
   </th:block>
 </th:block>
-  <script>
-    //전역변수로 counter 0
-    // 10 ** 3
+<!-- The Modal -->
+<div class="modal" id="myModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
 
-    let counter = 0;
-    function callLocal(n, cb) {
-      const add = 10 ** n;
-        counter += add;
-        console.log(`[local] 10^${n} = ${add} -> counter : ${counter}`)
-        if(cb) cb();
-    }
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Reply</h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
 
-    function callAsync(n, cb) {
-      const add = 10 ** n;
-      const delay = Math.floor(Math.random() * 1000);
-      setTimeout(() => {
-        counter += add;
-        console.log(`[async] 10^${n} = ${add} -> counter : ${counter}, delay : ${delay}ms`)
-        if(cb) cb();
-      }, delay);
-    }
+      <!-- Modal body -->
+      <div class="modal-body">
+        <div class="form-group">
+          <input class="form-control" type="text" name="text" placeholder="replyText...">
+        </div>
+        <div class="form-group">
+          <input class="form-control mt-4" type="text" name="replyer" placeholder="replyer">
+        </div>
+        <input type="hidden" name="rno">
+      </div>
 
-    //callback
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger replyRemove">Remove</button>
+        <button type="button" class="btn btn-warning replyModify">Modify</button>
+        <button type="button" class="btn btn-primary replySave">save</button>
+        <button type="button" class="btn btn-outline-secondary replyClose" data-bs-dismiss="modal">Close</button>
+      </div>
 
-    callAsync(0, () => {
-      callAsync(1, () => {
-        callAsync(2, () => {
-          callAsync(3, () => {
-            callAsync(4, () => {
-              callLocal(5, () => {
-                callLocal(6, () => {
-                  callLocal(7 , () => {
-                    callLocal(8, () => {
-                      callLocal(9)
-                    })
-                  })
-                })
-              })
-            });
-          });
+    </div>
+  </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.11.13/dayjs.min.js" integrity="sha512-FwNWaxyfy2XlEINoSnZh1JQ5TRRtGow0D6XcmAWmYCRgvqOUTnzCxPc9uF35u5ZEpirk1uhlPVA19tflhvnW1g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.11.13/plugin/relativeTime.min.js" integrity="sha512-MVzDPmm7QZ8PhEiqJXKz/zw2HJuv61waxb8XXuZMMs9b+an3LoqOqhOEt5Nq3LY1e4Ipbbd/e+AWgERdHlVgaA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.11.13/locale/ko.min.js" integrity="sha512-ycjm4Ytoo3TvmzHEuGNgNJYSFHgsw/TkiPrGvXXkR6KARyzuEpwDbIfrvdf6DwXm+b1Y+fx6mo25tBr1Icg7Fw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script th:inline="javascript">
+  window.addEventListener("load", e => {
+    //dayjs 전역설정
+    dayjs.extend(window.dayjs_plugin_relativeTime);
+    dayjs.locale('ko');
+    const myModal = new bootstrap.Modal(document.querySelector('.modal'))
+    const bno = [[${dto.bno}]]
+    const listGroup = document.querySelector(".replyList");
+
+    const loadJSONDATA = () => {
+      fetch(`/replies/board/${bno}`)
+          .then(resp => resp.json())
+          .then(arr => {
+            console.log(arr)
+            // console.log(ev.type)
+            // console.log(ev.target)
+            // console.log(ev.currentTarget)
+            //success
+            document.querySelector(".replyCount").innerHTML = "Reply Count" + arr.length;
+
+            listGroup.innerHTML = arr.map(r => {
+              console.log(r)
+              return `
+                  <li class="card list-group-item" data-rno="${r.rno}"><b>${r.rno}</b>
+                  <div class="card-body">
+                    <h5 class="card-title">${r.text}</h5>
+                    <h5 class="card-subtitle mb-2 text-muted">${r.replyer}</h5>
+                    <p class="card-text">${dayjs(r.regDate).fromNow()}</p>
+                  </div>
+                  <div>
+                    <button class="modifydelete btn-primary">댓글 수정 및 삭제하기</button>
+                  </div>
+                  </li>
+                  `;
+            }).join("")
+            // let tag = "";
+            // tag += `<li>${body.rno}</li> <li>${body.text}</li>`
+            // document.querySelector(".replyList").html(tag);
+          })
+    };
+    document.querySelector(".replyCount").addEventListener("click", loadJSONDATA);
+
+    document.querySelector(".addReply").addEventListener("click", () => {
+      document.querySelectorAll('.modal input[type="text"]').forEach(i => i.value = '');
+      const inputs = document.querySelectorAll('.modal-footer button');
+      const inputsArr = [...inputs];
+      inputsArr.filter(b => {b.classList.add('d-none'); return b.matches('.replyClose, .replySave')}).forEach(b => b.classList.remove('d-none'));
+      //inputsArr.map(b => {b.classList.add('d-none'); return b}).filter();
+
+
+
+      // let list = document.querySelector(".replyRemove").classList;
+      // console.log(list);
+      // if(list.contains("invisible"))
+      // document.querySelector(".replyRemove").classList.toggle("invisible", true)
+      // document.querySelector(".replyModify").classList.toggle("invisible", true)
+      myModal.show();
+      //클릭 이벤트, 컨트롤러
+
+
+      })
+      document.querySelector(".replySave").addEventListener("click", e => {
+        console.log("저장버튼~");
+        // const reply = {
+        //   text : document.querySelector('.modal-body input[type="text"]').value,
+        //   replyer : document.querySelector('.modal-body input[type="text"]').value,
+        //   bno : bno, // key value 같으면 생략 가능
+        // };
+        const reply = {bno};
+        e.target.closest(".modal").querySelectorAll("input[type=text]").forEach(i => {reply[i.name] = i.value})
+        console.log(reply)
+
+        fetch("/replies", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(reply)
+        })
+        .then(resp => resp.json())
+        .then(data => {
+          console.log(data)
+        alert( bno + "번 글에" + data + "번 댓글 등록 완료 ~~~")
+        myModal.hide();
+        loadJSONDATA();
         });
-      });
+
     });
+    document.querySelector(".replyList").addEventListener("click", e => {
+        console.log(e.target);
+        myModal.show();
+        console.log("모달 두둥 등장");
+        console.log(e.target.closest("li"))
+        // const text = e.target.closest("li div .card-title").value;
+        // const replyer = e.target.closest("li div .card-subtitle").value;
+        // console.log(text);
+        // console.log(replyer);
+        const inputs = document.querySelectorAll('.modal-footer button');
+        const inputsArr = [...inputs];
+        inputsArr.filter(b => {b.classList.add('d-none'); return b.matches('.replyClose, .replyModify, .replyRemove')}).forEach(b => b.classList.remove('d-none'));
+    });
+    // document.querySelector(".replyList").closest("li div button").addEventListener("click", () => {
 
-    // $.ajax({
-    //   success: (data) => {
-    //     $.ajax({
-    //       success: (data) => {
-    //
-    //       }
-    //     })
-    //   }
-    // });
-    $.ajax({
-      success:(data) => {},
-      error:(error) => {},
-      always:(data) => {}
-    })
-    .done((data) => {
+    // })
 
-    })
-    .fail(error => {
+  });
+</script>
 
-    })
-    .always((data) => {
-
-    })
-    .done((data) => {
-
-    })
-  </script>
 </html>

@@ -4,12 +4,10 @@ import com.climbjava.board.domain.dto.ReplyDTO;
 import com.climbjava.board.domain.mapper.ReplyMapper;
 import com.climbjava.board.repository.ReplyRepository;
 import lombok.Data;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @Data

@@ -1,7 +1,6 @@
 package com.climbjava.board.service;
 
 import com.climbjava.board.domain.dto.ReplyDTO;
-import com.climbjava.board.domain.entity.Reply;
 
 import java.util.List;
 

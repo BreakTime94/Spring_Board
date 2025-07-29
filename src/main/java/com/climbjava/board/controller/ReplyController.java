@@ -25,4 +25,10 @@ public class ReplyController {
     log.info("bno: " + bno);
     return ResponseEntity.ok(replyService.getList(bno));
   }
+
+  @PostMapping(value = "")
+  public ResponseEntity<?> save(@RequestBody ReplyDTO replyDTO) {
+    log.info(replyDTO);
+    return ResponseEntity.ok(replyService.register(replyDTO));
+  }
 }
