@@ -84,7 +84,7 @@
     const myModal = new bootstrap.Modal(document.querySelector('.modal'))
     const bno = [[${dto.bno}]]
     const listGroup = document.querySelector(".replyList");
-    let selectedRno = null;
+   // let selectedRno = null;
 
     const loadJSONDATA = () => {
       fetch(`/replies/board/${bno}`)
@@ -138,6 +138,8 @@
 
 
       })
+
+      //댓글등록 버튼 클릭 이벤트
       document.querySelector(".replySave").addEventListener("click", e => {
         console.log("저장버튼~");
         // const reply = {
@@ -165,74 +167,72 @@
         });
 
     });
-
+    // 1. 이벤트 등록 세부 개념 >> 이벤트 버블링
+    // 2. 모달 open 시 해야할 일
     document.querySelector(".replyList").addEventListener("click", e => {
         console.log(e.target);
         myModal.show();
         console.log("모달 두둥 등장");
         console.log(e.target.closest("li"));
         const li = e.target.closest("li")
-        selectedRno = li.dataset.rno;
-        console.log( "rno 값 :: " + selectedRno);
+        const rno = li.dataset.rno;
+        console.log( "rno 값 :: " + rno);
         console.log(li.querySelector(".card-title"))
         console.log(li.querySelector(".card-subtitle"))
-        const text = li.querySelector(".card-title").innerHTML;
-        const replyer = li.querySelector(".card-subtitle").innerHTML;
+        const text = li.querySelector(".card-title").innerText; // innerHTML도 괜찮지만 text가 조금 더 안정적
+        const replyer = li.querySelector(".card-subtitle").innerText;
 
         console.log(text);
         console.log(replyer);
 
         document.querySelector('.modal-body input[name="text"]').value = text;
         document.querySelector('.modal-body input[name="replyer"]').value = replyer;
+        document.querySelector('.modal-body input[name="rno"]').value = rno;
 
         const inputs = document.querySelectorAll('.modal-footer button');
         const inputsArr = [...inputs];
-        inputsArr.filter(b => {b.classList.add('d-none'); return b.matches('.replyClose, .replyModify, .replyRemove')}).forEach(b => b.classList.remove('d-none'));
+        inputsArr.filter(b => {b.classList.remove('d-none'); return b.matches('.replySave')}).forEach(b => b.classList.add('d-none'));
 
 
     });
 
-        document.querySelector(".replyRemove").addEventListener("click" , e => {
-          const result = confirm("글을 삭제하시겠습니까?");
-          if(!result) return;
+    document.querySelector(".modal .replyRemove").addEventListener("click" , e => {
+      const result = confirm("글을 삭제하시겠습니까?");
+      if(!result) return;
 
-          console.log("글 삭제 전송")
-          fetch("/replies", {
-            method: "DELETE",
-            headers: {
-              "Content-Type": "application/json"
-            },
-            body: JSON.stringify(selectedRno)
-          })
-              .then(resp => resp.json())
-              .then(data => {
-                console.log(data)
-                alert( bno + "번 글에" + data + "번 댓글 삭제 완료 ~~~")
-                myModal.hide();
-                loadJSONDATA();
-              });
-        });
+       const rno = document.querySelector('.modal-body input[name="replyer"]').value //-> rno 값을 직접 가져올 수 있다.
+
+      console.log("글 삭제 전송")
+      fetch(`/replies/${rno}`, {
+        method: "DELETE",
+      })
+          .then(() => {
+            alert("댓글이 삭제되었습니다.")
+            myModal.hide();
+            loadJSONDATA();
+          });
+    });
 
       document.querySelector(".replyModify").addEventListener("click" , ev => {
         const result = confirm("글을 수정하시겠습니까?");
         if(!result) return;
         console.log("글 수정 전송")
-
-        const reply = {bno : bno, rno : selectedRno};
+        const rno = document.querySelector('.modal-body input[name="rno"]').value;
+        const text = document.querySelector('.modal-body input[name="text"]').value;
+        const replyer = document.querySelector('.modal-body input[name="replyer"]').value;
+        const reply = {rno, text, replyer, bno};
         ev.target.closest(".modal").querySelectorAll("input[type=text]").forEach(i => {reply[i.name] = i.value})
         console.log(reply)
 
-        fetch("/replies", {
+        fetch(`/replies/${rno}`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json"
           },
           body: JSON.stringify(reply)
         })
-            .then(resp => resp.json())
-            .then(data => {
-              console.log(data)
-              alert( bno + "번 글에" + data.rno + "번 댓글 수정 완료 ~~~")
+            .then(() => {
+              alert("댓글 수정 완료")
               myModal.hide();
               loadJSONDATA();
             });

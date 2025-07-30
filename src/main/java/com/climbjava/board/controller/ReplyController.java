@@ -32,17 +32,29 @@ public class ReplyController {
     return ResponseEntity.ok(replyService.register(replyDTO));
   }
 
-  @PutMapping(value = "")
-  public ResponseEntity<?> update(@RequestBody ReplyDTO replyDTO) {
-    log.info(replyDTO);
-    replyService.modify(replyDTO);
-    return ResponseEntity.ok(replyDTO);
+//  @PutMapping(value = "")
+//  public ResponseEntity<?> update(@RequestBody ReplyDTO replyDTO) {
+//    log.info(replyDTO);
+//    replyService.modify(replyDTO);
+//    return ResponseEntity.ok(replyDTO);
+//  }
+
+//  @DeleteMapping(value = "")
+//  public ResponseEntity<?> delete(@RequestBody Long rno) {
+//    log.info(rno);
+//    replyService.delete(rno);
+//    return ResponseEntity.ok(rno);
+//  }
+
+  @DeleteMapping(value = "{rno}")
+  public ResponseEntity<?> deleteById(@PathVariable("rno") Long rno) {
+    replyService.delete(rno);
+    return ResponseEntity.ok("success");
   }
 
-  @DeleteMapping(value = "")
-  public ResponseEntity<?> delete(@RequestBody Long rno) {
-    log.info(rno);
-    replyService.delete(rno);
-    return ResponseEntity.ok(rno);
-  }
+    @PutMapping(value = "{rno}")
+  public ResponseEntity<?> update(@PathVariable Long rno, @RequestBody ReplyDTO replyDTO) {
+    replyService.modify(replyDTO);
+    return ResponseEntity.ok("success");
+    }
 }
