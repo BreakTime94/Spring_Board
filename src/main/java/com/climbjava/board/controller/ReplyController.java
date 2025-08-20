@@ -15,6 +15,7 @@ import java.util.List;
 @RequestMapping("replies")
 @Log4j2
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:3000")
 public class ReplyController {
   private final ReplyService replyService;
 
