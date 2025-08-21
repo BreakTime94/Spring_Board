@@ -32,17 +32,20 @@ public class BoardRestController {
   @PostMapping("register")
   public ResponseEntity<?> register(@RequestBody BoardDTO dto) {
     log.info("dto: " + dto);
+    boardService.register(dto);
     return ResponseEntity.ok(dto.getBno());
   }
 
   @PostMapping("modify")
   public ResponseEntity<?> modify(@RequestBody(required = false) BoardDTO dto) {
+    log.info("dto: " + dto);
     boardService.modify(dto);
     return ResponseEntity.ok(200);
   }
 
   @PostMapping("remove")
-  public ResponseEntity<?> remove(Long bno) {
+  public ResponseEntity<?> remove(@RequestParam Long bno) {
+    log.info("bno: " + bno);
     boardService.remove(bno);
     return ResponseEntity.ok("글이 삭제되었습니다.");
   }

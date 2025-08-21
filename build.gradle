@@ -44,7 +44,8 @@ dependencies {
 
   compileOnly 'org.projectlombok:lombok'
   annotationProcessor 'org.projectlombok:lombok'
-
+  testAnnotationProcessor 'org.projectlombok:lombok'
+  testImplementation 'org.projectlombok:lombok'
 
   //implementation 'com.querydsl:querydsl-apt:5.0.0'
   implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
@@ -76,6 +77,11 @@ dependencies {
   implementation 'org.mapstruct:mapstruct:1.6.3'
   annotationProcessor 'org.mapstruct:mapstruct-processor:1.6.3'
   annotationProcessor 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
+
+  //security 관련
+  implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
+
+
 }
 
 sourceSets {
